@@ -13,20 +13,33 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.emchulacity.nav.Navigation
+import com.example.emchulacity.nav.Screens
 import com.example.emchulacity.ui.theme.EmchulaCityTheme
 
 @Composable
 fun EnchulaAPP() {
+    val navController = rememberNavController()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val canNavigate = backStackEntry?.destination?.route != Screens.lobby.name
         Scaffold (
-            topBar = {EnchulaTopBar()}
+            topBar = {
+                EnchulaTopBar(
+                    canNavigate = canNavigate,
+                    navigateUp = { navController.popBackStack() },
+                )
+            }
         ){ innerPadding ->
-
                 Navigation(
+                    navController = navController,
                     modifier = Modifier.padding(innerPadding)
                 )
         }
@@ -42,13 +55,19 @@ fun EnchulaTopBar(
     canNavigate: Boolean = false,
     navigateUp: () -> Unit = {},
 ) {
+    val modifierText =
+        if(canNavigate)
+            Modifier.fillMaxWidth().
+            padding(end = dimensionResource(R.dimen.top_bar_padding))
+        else
+            Modifier.fillMaxWidth()
     TopAppBar(
         title = {
             Text(
                 text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifierText
             )
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -60,7 +79,6 @@ fun EnchulaTopBar(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.back_button),
-                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
