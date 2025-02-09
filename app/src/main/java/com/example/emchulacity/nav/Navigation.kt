@@ -29,8 +29,14 @@ fun Navigation(
         modifier = modifier
     ) {
         composable(Screens.lobby.name) {
-            val context = LocalContext as MainActivity
-            context.requestPermission()
+            val context = LocalContext.current
+
+            if (context is MainActivity) {
+                context.requestPermission()
+            } else {
+                println("Context is not MainActivity")
+            }
+
             LobbyScreen(
                 cameraNavigate = { navController.navigate(Screens.camera.name) },
                 galleriesNavigate = { navController.navigate(Screens.gallery.name) }

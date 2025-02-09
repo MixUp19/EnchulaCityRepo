@@ -6,10 +6,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
+import androidx.compose.ui.platform.LocalContext
 import com.example.emchulacity.ui.theme.EmchulaCityTheme
 
 class MainActivity : ComponentActivity() {
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+            } else {
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -20,13 +27,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun requestPermission(){
-       registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted ->
-        if(isGranted){
-          // Permission granted
-        }else{
-          // Permission denied
-        }
-      }
+    fun requestPermission() {
+        requestPermissionLauncher.launch(android.Manifest.permission.CAMERA)
     }
 }
