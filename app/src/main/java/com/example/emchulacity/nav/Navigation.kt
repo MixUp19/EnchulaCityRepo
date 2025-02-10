@@ -1,25 +1,51 @@
 package com.example.emchulacity.nav
 
-import androidx.compose.material3.TopAppBar
+import android.Manifest
+import android.widget.Toast
 import androidx.compose.runtime.Composable
+import android.content.pm.PackageManager
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.emchulacity.EnchulaAPP
-import com.example.emchulacity.EnchulaTopBar
 import com.example.emchulacity.MainActivity
+import androidx.core.app.ActivityCompat
 import com.example.emchulacity.screens.LobbyScreen
 import com.example.emchulacity.screens.CameraScreen
 import com.example.emchulacity.screens.GalleryScreen
 
 
+fun verificatePermission(
+    requestPermission: ActivityResultLauncher<String>,
+    navigate : () -> Unit
+    ){
+    val camera = Manifest.permission.CAMERA
+    val context = LocalContext as MainActivity
+    when{
+        ContextCompat.checkSelfPermission(
+            context,
+            camera
+        ) == PackageManager.PERMISSION_GRANTED -> {
+                navigate()
+        }
+        ActivityCompat.shouldShowRequestPermissionRationale(
+            context , camera) -> {
+            Toast.makeText(context, "Necesitamos acceso a la cámara", Toast.LENGTH_LONG).show()
+        }
+        else -> {
+            requestPermission.launch(
+               camera
+            )
+        }
+    }
+}
 
 @Composable
 fun Navigation(
+    requestPermission:  ActivityResultLauncher<String>,
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
@@ -29,16 +55,11 @@ fun Navigation(
         modifier = modifier
     ) {
         composable(Screens.lobby.name) {
-            val context = LocalContext.current
-
-            if (context is MainActivity) {
-                context.requestPermission()
-            } else {
-                println("Context is not MainActivity")
-            }
-
             LobbyScreen(
-                cameraNavigate = { navController.navigate(Screens.camera.name) },
+                cameraNavigate = { verificatePermission(
+                    requestPermission,
+                    { navController.navigate(Screens.camera.name) }
+                ) },
                 galleriesNavigate = { navController.navigate(Screens.gallery.name) }
             )
         }

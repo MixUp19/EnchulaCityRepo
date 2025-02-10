@@ -1,5 +1,8 @@
 package com.example.emchulacity
 
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -26,7 +29,9 @@ import com.example.emchulacity.nav.Screens
 import com.example.emchulacity.ui.theme.EmchulaCityTheme
 
 @Composable
-fun EnchulaAPP() {
+fun EnchulaAPP(
+    result: ActivityResultLauncher<String> = ComponentActivity().registerForActivityResult(ActivityResultContracts.RequestPermission()){}
+) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canNavigate = backStackEntry?.destination?.route != Screens.lobby.name
@@ -39,6 +44,7 @@ fun EnchulaAPP() {
             }
         ){ innerPadding ->
                 Navigation(
+                    requestPermission = result,
                     navController = navController,
                     modifier = Modifier.padding(innerPadding)
                 )
