@@ -1,6 +1,7 @@
 package com.example.emchulacity.nav
 
 import android.Manifest
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import android.content.pm.PackageManager
@@ -16,24 +17,26 @@ import androidx.core.app.ActivityCompat
 import com.example.emchulacity.screens.LobbyScreen
 import com.example.emchulacity.screens.CameraScreen
 import com.example.emchulacity.screens.GalleryScreen
+import kotlin.math.log
 
 
 fun verificatePermission(
     requestPermission: ActivityResultLauncher<String>,
+    context: Context,
     navigate : () -> Unit
     ){
     val camera = Manifest.permission.CAMERA
-    val context = LocalContext as MainActivity
+    val thiscontext = context
     when{
         ContextCompat.checkSelfPermission(
-            context,
+            thiscontext,
             camera
         ) == PackageManager.PERMISSION_GRANTED -> {
                 navigate()
         }
         ActivityCompat.shouldShowRequestPermissionRationale(
-            context , camera) -> {
-            Toast.makeText(context, "Necesitamos acceso a la cámara", Toast.LENGTH_LONG).show()
+            thiscontext as MainActivity , camera) -> {
+            Toast.makeText(thiscontext, "Necesitamos acceso a la cámara", Toast.LENGTH_LONG).show()
         }
         else -> {
             requestPermission.launch(
@@ -49,6 +52,7 @@ fun Navigation(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     NavHost(
         navController = navController,
         startDestination = Screens.lobby.name,
@@ -58,8 +62,9 @@ fun Navigation(
             LobbyScreen(
                 cameraNavigate = { verificatePermission(
                     requestPermission,
-                    { navController.navigate(Screens.camera.name) }
-                ) },
+                    context
+                ) { navController.navigate(Screens.camera.name) }
+                },
                 galleriesNavigate = { navController.navigate(Screens.gallery.name) }
             )
         }

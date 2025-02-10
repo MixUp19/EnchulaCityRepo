@@ -26,6 +26,5 @@ class MainActivity : ComponentActivity() {
         }else{
             Toast.makeText(this, "Necesitamos Permiso para que disfrutes la experiencia", Toast.LENGTH_LONG).show()
         }
-      }
-
+       }
 }
