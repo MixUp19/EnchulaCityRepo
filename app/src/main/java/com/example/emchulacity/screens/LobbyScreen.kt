@@ -26,7 +26,7 @@ import com.example.emchulacity.ui.theme.EmchulaCityTheme
 
 @Composable
 fun LobbyScreen(
-    cameraNavigate: () -> Unit = {},
+    cameraNavigate:  () -> Unit = {},
     galleriesNavigate: () -> Unit = {},
     modifier: Modifier =Modifier
 ) {
@@ -40,8 +40,8 @@ fun LobbyScreen(
                 .weight(1f)
         )
         ButtonRow(
-            cameraNavigate,
-            galleriesNavigate,
+            cameraNavigate = cameraNavigate,
+            galleriesNavigate = galleriesNavigate,
             modifier = Modifier.fillMaxWidth()
                 .weight(1f)
         )
@@ -50,7 +50,7 @@ fun LobbyScreen(
 
 @Composable
 fun ButtonRow(
-    cameraNavigate: () -> Unit = {},
+    cameraNavigate:  () -> Unit = {},
     galleriesNavigate: () -> Unit = {},
     modifier: Modifier = Modifier
 ){
