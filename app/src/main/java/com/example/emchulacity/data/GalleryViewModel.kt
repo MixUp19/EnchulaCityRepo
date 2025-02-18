@@ -20,7 +20,7 @@ class GalleryViewModel : ViewModel() {
     private fun fetchImages() {
         viewModelScope.launch(Dispatchers.IO) {
             val client = OkHttpClient()
-            repeat(20) {
+            repeat(3) {
                 val request = Request.Builder()
                     .url("https://dog.ceo/api/breeds/image/random")
                     .build()
@@ -35,5 +35,9 @@ class GalleryViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    fun deleteImage(imageUrl: String) {
+        _imageUrls.remove(imageUrl)
     }
 }
