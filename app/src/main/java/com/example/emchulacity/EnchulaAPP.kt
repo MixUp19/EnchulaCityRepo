@@ -35,20 +35,20 @@ fun EnchulaAPP(
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canNavigate = backStackEntry?.destination?.route != Screens.lobby.name
-        Scaffold (
-            topBar = {
-                EnchulaTopBar(
-                    canNavigate = canNavigate,
-                    navigateUp = { navController.popBackStack() },
-                )
-            }
-        ){ innerPadding ->
-                Navigation(
-                    requestPermission = result,
-                    navController = navController,
-                    modifier = Modifier.padding(innerPadding)
+    Scaffold (
+        topBar = {
+            EnchulaTopBar(
+                canNavigate = canNavigate,
+                navigateUp = { navController.popBackStack() },
                 )
         }
+    ){ innerPadding ->
+        Navigation(
+            requestPermission = result,
+            navController = navController,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
 }
 
 

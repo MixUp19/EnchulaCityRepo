@@ -7,10 +7,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.emchulacity.ui.theme.EmchulaCityTheme
+import com.google.ar.core.ArCoreApk
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ArCoreApk.getInstance().checkAvailabilityAsync(this) { availability ->
+            if(availability.isSupported){
+                Toast.makeText(this,"ARCore is supported", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this,"ARCore is not supported", Toast.LENGTH_SHORT).show()
+            }
+        }
         enableEdgeToEdge()
         setContent {
             EmchulaCityTheme {
