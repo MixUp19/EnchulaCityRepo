@@ -43,6 +43,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation(platform("androidx.compose:compose-bom:2025.01.01"))
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation("com.google.ar:core:1.33.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
