@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.emchulacity.MainActivity
 import androidx.core.app.ActivityCompat
+import androidx.navigation.toRoute
 import com.example.emchulacity.screens.LobbyScreen
 import com.example.emchulacity.screens.CameraScreen
 import com.example.emchulacity.screens.GalleryScreen
@@ -112,7 +113,7 @@ fun Navigation(
             )
         }
         composable(Screens.camera.name) {
-            CameraScreen()
+            CameraScreen(navController)
         }
         composable(Screens.gallery.name) {
             GalleryScreen()
