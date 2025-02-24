@@ -83,17 +83,14 @@ fun ButtonRow(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
-        when (isArSupported) {
-            true -> Button(onClick = cameraNavigate) {
+        Button(onClick = cameraNavigate) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_camera_24),
                     contentDescription = null
                 )
                 Text(text = stringResource(R.string.camera))
-            }
-            false -> Text("Tomar foto")
-            null -> CircularProgressIndicator()
         }
+
 
         Button(onClick = galleriesNavigate) {
             Icon(
