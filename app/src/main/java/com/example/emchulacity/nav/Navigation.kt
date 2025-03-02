@@ -14,11 +14,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.emchulacity.MainActivity
 import androidx.core.app.ActivityCompat
-import androidx.navigation.toRoute
 import com.example.emchulacity.screens.LobbyScreen
 import com.example.emchulacity.screens.CameraScreen
 import com.example.emchulacity.screens.GalleryScreen
-import kotlin.math.log
 
 
 fun verificatePermission(
@@ -27,13 +25,18 @@ fun verificatePermission(
     navigate : () -> Unit
     ){
     val camera = Manifest.permission.CAMERA
+    val read = Manifest.permission.READ_EXTERNAL_STORAGE
+    val write = Manifest.permission.WRITE_EXTERNAL_STORAGE
+    var cameraIsGranted = false
+    var readIsGranted  = false
+    var writeIsGranted  = false
     val thiscontext = context
     when{
         ContextCompat.checkSelfPermission(
             thiscontext,
             camera
         ) == PackageManager.PERMISSION_GRANTED -> {
-                navigate()
+                cameraIsGranted = true
         }
         ActivityCompat.shouldShowRequestPermissionRationale(
             thiscontext as MainActivity , camera) -> {
@@ -44,6 +47,45 @@ fun verificatePermission(
                camera
             )
         }
+    }
+    when{
+        ContextCompat.checkSelfPermission(
+            thiscontext,
+            write
+        ) == PackageManager.PERMISSION_GRANTED -> {
+            writeIsGranted = true
+        }
+        ActivityCompat.shouldShowRequestPermissionRationale(
+            thiscontext as MainActivity , write) -> {
+            Toast.makeText(thiscontext, "Necesitamos acceso a la cámara", Toast.LENGTH_LONG).show()
+        }
+        else -> {
+            requestPermission.launch(
+                write
+            )
+        }
+    }
+    when{
+        ContextCompat.checkSelfPermission(
+            thiscontext,
+            read
+        ) == PackageManager.PERMISSION_GRANTED -> {
+            readIsGranted = true
+        }
+        ActivityCompat.shouldShowRequestPermissionRationale(
+            thiscontext as MainActivity , read) -> {
+            Toast.makeText(thiscontext, "Necesitamos acceso a la cámara", Toast.LENGTH_LONG).show()
+        }
+        else -> {
+            requestPermission.launch(
+                read
+            )
+        }
+    }
+    if (cameraIsGranted && readIsGranted && writeIsGranted){
+        navigate()
+    }else{
+        Toast.makeText(thiscontext, "Necesitamos acceso a los permisos solicitados", Toast.LENGTH_LONG).show()
     }
 }
 
@@ -70,7 +112,7 @@ fun Navigation(
             )
         }
         composable(Screens.camera.name) {
-            CameraScreen(navController)
+            CameraScreen()
         }
         composable(Screens.gallery.name) {
             GalleryScreen()

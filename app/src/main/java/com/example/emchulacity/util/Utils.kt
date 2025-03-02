@@ -19,7 +19,6 @@ object Utils {
         return "models/dog.glb"
     }
 
-    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     fun createAnchorNode(
         engine: Engine,
         modelLoader: ModelLoader,
@@ -34,7 +33,7 @@ object Utils {
                 if (isEmpty()) {
                     this += modelLoader.createInstancedModel(model, 10)
                 }
-            }.removeLast(),
+            }.removeAt(modelInstance.size -1),
             scaleToUnits = 0.2f
         ).apply {
             isEditable = true

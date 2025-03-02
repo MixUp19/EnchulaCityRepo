@@ -1,15 +1,24 @@
 package com.example.emchulacity.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import android.view.MotionEvent
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import com.example.emchulacity.util.Utils
+import com.example.emchulacity.util.getCurrentFrameAsBitmap
+import com.example.emchulacity.util.saveMediaToStorage
 import com.google.ar.core.Config
 import com.google.ar.core.Frame
 import com.google.ar.core.TrackingFailureReason
@@ -26,11 +35,14 @@ import io.github.sceneview.rememberModelLoader
 import io.github.sceneview.rememberNodes
 import io.github.sceneview.rememberOnGestureListener
 import io.github.sceneview.rememberView
+import android.widget.Toast
+import androidx.compose.material3.Text
 
 @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
-fun CameraScreen(navController: NavController) {
+fun CameraScreen() {
 
+    val context = LocalContext.current
     val engine = rememberEngine()
     val modelLoader = rememberModelLoader(engine = engine)
     val materialLoader = rememberMaterialLoader(engine = engine)
@@ -68,8 +80,8 @@ fun CameraScreen(navController: NavController) {
             frame.value = updatedFrame
         },
         sessionConfiguration = { session, config ->
-            config.depthMode = when (session.isDepthModeSupported(Config.DepthMode.AUTOMATIC)) {
-                true -> Config.DepthMode.AUTOMATIC
+            config.depthMode = when (session.isDepthModeSupported(Config.DepthMode.RAW_DEPTH_ONLY)) {
+                true -> Config.DepthMode.RAW_DEPTH_ONLY
                 else -> Config.DepthMode.DISABLED
             }
             config.lightEstimationMode = Config.LightEstimationMode.ENVIRONMENTAL_HDR
@@ -97,6 +109,34 @@ fun CameraScreen(navController: NavController) {
                 }
             }
         )
-
     )
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                frame.value?.let { currentFrame ->
+                    getCurrentFrameAsBitmap(currentFrame)?.let { bitmap ->
+                        saveMediaToStorage(bitmap, context) { uri ->
+                            Toast.makeText(context, "Image saved: $uri", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+               Toast.makeText(context, "No tenemos acceso al almacenamiento", Toast.LENGTH_LONG).show()
+            }
+        }) {
+            Text(text = "Take Photo")
+        }
+    }
 }
+
+
+
