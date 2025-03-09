@@ -16,7 +16,7 @@ object Utils {
 
 
     fun getModel(): String {
-        return "models/dog.glb"
+        return "models/calle2.glb"
     }
 
     fun createAnchorNode(
@@ -34,7 +34,7 @@ object Utils {
                     this += modelLoader.createInstancedModel(model, 10)
                 }
             }.removeAt(modelInstance.size -1),
-            scaleToUnits = 0.2f
+            scaleToUnits = 1f
         ).apply {
             isEditable = true
         }
