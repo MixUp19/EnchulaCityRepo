@@ -54,31 +54,31 @@ fun ARSceneView.captureImage(callback: (Bitmap?) -> Unit) {
 
 fun saveMediaToStorage(bitmap: Bitmap, context: Context, onUriCreated: (Uri) -> Unit) {
     val fos: OutputStream?
-
-//Generating a file name
+    // Generar un nombre de archivo
     val filename = "${System.currentTimeMillis()}.jpg"
 
     try {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val resolver = context.contentResolver
-            val contentValues = ContentValues()
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "$filename.jpg")
-
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-            val imageUri =
-                resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-            fos = Objects.requireNonNull(imageUri)?.let {
-                resolver.openOutputStream(it)
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, "$filename.jpg")
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                // Especifica la carpeta personalizada dentro de Pictures
+                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/EnchulaCity")
             }
+            val imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            fos = imageUri?.let { resolver.openOutputStream(it) }
 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos!!)
-            Objects.requireNonNull(fos)
-
+            fos.close()
             imageUri?.let { onUriCreated(it) }
         } else {
-            val imagesDir =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            val image = File(imagesDir, filename)
+            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val myDir = File(imagesDir, "EnchulaCity")
+            if (!myDir.exists()) {
+                myDir.mkdirs()
+            }
+            val image = File(myDir, filename)
             fos = FileOutputStream(image)
 
             fos.use {
@@ -90,5 +90,5 @@ fun saveMediaToStorage(bitmap: Bitmap, context: Context, onUriCreated: (Uri) -> 
     } catch (e: Exception) {
         Log.d("error", e.toString())
     }
-
 }
+

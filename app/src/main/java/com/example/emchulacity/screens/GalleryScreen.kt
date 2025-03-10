@@ -37,7 +37,7 @@ import com.example.emchulacity.data.GalleryViewModel
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun GalleryScreen(viewModel: GalleryViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun GalleryScreen(viewModel: GalleryViewModel = GalleryViewModel(context = LocalContext.current)) {
     val imageUrls by remember { mutableStateOf(viewModel.imageUrls) }
     var selectedImage by remember { mutableStateOf<String?>(null) }
 
