@@ -1,21 +1,28 @@
 package com.example.emchulacity.screens
 
 import android.Manifest
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import android.content.pm.PackageManager
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.example.emchulacity.util.Utils
 import com.example.emchulacity.util.captureImage
@@ -37,9 +44,9 @@ import io.github.sceneview.rememberNodes
 import io.github.sceneview.rememberOnGestureListener
 import io.github.sceneview.rememberView
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CameraScreen() {
-
     val context = LocalContext.current
     val engine = rememberEngine()
     val modelLoader = rememberModelLoader(engine = engine)
@@ -62,6 +69,8 @@ fun CameraScreen() {
     }
 
     val bitmapRequested = remember { mutableStateOf(false) }
+
+    val models = Utils.models
 
     ARScene(
         modifier = Modifier.fillMaxSize(),
@@ -128,21 +137,52 @@ fun CameraScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Button(onClick = {
-            if (ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                bitmapRequested.value = true
-            } else {
-               Toast.makeText(context, "No tenemos acceso al almacenamiento", Toast.LENGTH_LONG).show()
+        Box(
+            modifier = Modifier
+                .size(64.dp)
+                .clip(CircleShape)
+                .background(Color.White)
+                .padding(10.dp)
+                .clickable {
+                    if (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        bitmapRequested.value = true
+                    } else {
+                        Toast.makeText(context, "No tenemos acceso al almacenamiento", Toast.LENGTH_LONG).show()
+                    }
+                           },
+            contentAlignment = Alignment.Center
+        ){}
+        LazyRow(
+            contentPadding = PaddingValues(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(models) { model ->
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(
+                            modifier = Modifier
+                                .size(64.dp)
+                                .clip(CircleShape)
+                                .background(Color.White)
+                                .clickable { Utils.setModel(model.model) },
+                    contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(model.icon),
+                            contentDescription = model.name,
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                    Text(text = model.name, fontSize = 12.sp, color = Color.White)
+                }
             }
-        }) {
-            Text(text = "Take Photo")
         }
+
     }
 }
 

@@ -1,8 +1,7 @@
 package com.example.emchulacity.util
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
+import com.example.emchulacity.R
 import com.google.android.filament.Engine
 import com.google.ar.core.Anchor
 import io.github.sceneview.ar.node.AnchorNode
@@ -13,10 +12,25 @@ import io.github.sceneview.node.CubeNode
 import io.github.sceneview.node.ModelNode
 
 object Utils {
+    var currentModel = "models/calle.glb"
 
+    val models = listOf(
+        Model3d("Calle", "models/calle.glb", R.drawable.calle),
+        Model3d("Calle 2", "models/calle2.glb", R.drawable.calle2),
+        Model3d("cebra", "models/cebra.glb", R.drawable.cebra),
+        Model3d("perro", "models/dog.glb", R.drawable.dog),
+        Model3d("Calle", "models/calle.glb", R.drawable.calle),
+        Model3d("Calle 2", "models/calle2.glb", R.drawable.calle2),
+        Model3d("cebra", "models/cebra.glb", R.drawable.cebra),
+        Model3d("perro", "models/dog.glb", R.drawable.dog),
+    )
+
+    fun setModel(modelSelected: String){
+        currentModel = modelSelected
+    }
 
     fun getModel(): String {
-        return "models/calle2.glb"
+        return currentModel
     }
 
     fun createAnchorNode(
