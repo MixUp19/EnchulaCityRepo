@@ -10,11 +10,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
+import androidx.core.net.toUri
 
 class GalleryViewModel(context: Context) : ViewModel() {
+    private val appContext = context.applicationContext
     private val _imageUrls = mutableStateListOf<String>()
     val imageUrls: List<String> get() = _imageUrls
 
@@ -72,27 +75,37 @@ class GalleryViewModel(context: Context) : ViewModel() {
             imageUris.map { _imageUrls.add(it.toString()) }
         }
     }
-    //private fun fetchImages() {
-    //    viewModelScope.launch(Dispatchers.IO) {
-    //        val client = OkHttpClient()
-    //        repeat(3) {
-    //            val request = Request.Builder()
-    //                .url("https://dog.ceo/api/breeds/image/random")
-    //                .build()
-//
-    //            client.newCall(request).execute().use { response ->
-    //                val responseData = response.body?.string()
-    //                responseData?.let {
-    //                    val json = JSONObject(it)
-    //                    val imageUrl = json.getString("message")
-    //                    _imageUrls.add(imageUrl)
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 
     fun deleteImage(imageUrl: String) {
-        _imageUrls.remove(imageUrl)
+        viewModelScope.launch(Dispatchers.IO) {
+            val uri = imageUrl.toUri()
+            // Intenta borrar el archivo usando el content resolver
+            val rowsDeleted = appContext.contentResolver.delete(uri, null, null)
+            if (rowsDeleted > 0) {
+                // Actualiza la lista en el hilo principal para que la UI se refresque
+                withContext(Dispatchers.Main) {
+                    _imageUrls.remove(imageUrl)
+                }
+            } 
+        }
     }
 }
+//private fun fetchImages() {
+//    viewModelScope.launch(Dispatchers.IO) {
+//        val client = OkHttpClient()
+//        repeat(3) {
+//            val request = Request.Builder()
+//                .url("https://dog.ceo/api/breeds/image/random")
+//                .build()
+//
+//            client.newCall(request).execute().use { response ->
+//                val responseData = response.body?.string()
+//                responseData?.let {
+//                    val json = JSONObject(it)
+//                    val imageUrl = json.getString("message")
+//                    _imageUrls.add(imageUrl)
+//                }
+//            }
+//        }
+//    }
+//}

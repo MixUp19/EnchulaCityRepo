@@ -2,6 +2,8 @@ package com.example.emchulacity.screens
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -31,9 +33,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.FileProvider
+import androidx.core.graphics.PathUtils
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.emchulacity.data.GalleryViewModel
+import java.io.File
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -106,9 +112,11 @@ fun ZoomedImageDialog(imageUrl: String, onClose: () -> Unit, onDelete: () -> Uni
 }
 
 fun shareImage(context: Context, imageUrl: String) {
+    val imageUri = imageUrl.toUri()
     val intent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, imageUrl)
+        type = "image/*"
+        putExtra(Intent.EXTRA_STREAM, imageUri)
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
     context.startActivity(Intent.createChooser(intent, "Share Image"))
 }

@@ -61,7 +61,7 @@ fun saveMediaToStorage(bitmap: Bitmap, context: Context, onUriCreated: (Uri) -> 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val resolver = context.contentResolver
             val contentValues = ContentValues().apply {
-                put(MediaStore.MediaColumns.DISPLAY_NAME, "$filename.jpg")
+                put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
                 // Especifica la carpeta personalizada dentro de Pictures
                 put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/EnchulaCity")
