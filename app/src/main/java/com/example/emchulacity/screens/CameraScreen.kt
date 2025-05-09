@@ -105,6 +105,7 @@ fun CameraScreen() {
                             point = false
                         )
                     }?.createAnchorOrNull()?.let {
+                        modelInstance.clear()
                         val nodeModel = Utils.createAnchorNode(
                             engine = engine,
                             modelLoader = modelLoader,
@@ -169,7 +170,7 @@ fun CameraScreen() {
                                 .size(64.dp)
                                 .clip(CircleShape)
                                 .background(Color.White)
-                                .clickable { Utils.setModel(model.model)
+                                .clickable { Utils.setModel(model.model, model.scale)
                                     //Toast.makeText(context, Utils.getModel(), Toast.LENGTH_SHORT).show()
                                 },
                     contentAlignment = Alignment.Center

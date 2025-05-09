@@ -3,5 +3,6 @@ package com.example.emchulacity.util
 data class Model3d (
     val name: String,
     val model: String,
-    val icon: Int
+    val icon: Int,
+    val scale: Float = 1f,
 )
