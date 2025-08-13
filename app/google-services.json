@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "341360151891",
+    "project_id": "enchulacitydemo",
+    "storage_bucket": "enchulacitydemo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341360151891:android:bd8d85c49e578daeb965a6",
+        "android_client_info": {
+          "package_name": "com.example.emchulacity"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8I21aqPN6lJpUdaqZUUnMylxxvdeo1aA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

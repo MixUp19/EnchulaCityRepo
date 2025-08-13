@@ -9,8 +9,8 @@
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="/media/mixup/AndroidStudioProjects/EmchulaCity" />
-            <option value="/media/mixup/AndroidStudioProjects/EmchulaCity/app" />
+            <option value="/mnt/mixup/AndroidStudioProjects" />
+            <option value="/mnt/mixup/AndroidStudioProjects/app" />
           </set>
         </option>
       </GradleProjectSettings>

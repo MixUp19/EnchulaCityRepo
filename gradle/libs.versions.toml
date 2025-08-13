@@ -12,6 +12,7 @@ uiTextGoogleFonts = "1.7.7"
 foundationLayoutAndroid = "1.7.7"
 navigationCompose = "2.8.6"
 camerax_version = "1.5.0-alpha05"
+vertexai = "16.0.0"
 arsceneview = "2.2.1"
 
 [libraries]
@@ -38,6 +39,8 @@ androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycl
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax_version" }
 androidx-camera-extensions = { group = "androidx.camera", name = "camera-extensions", version.ref = "camerax_version" }
 androidx-camera-mlkit-vision = { group = "androidx.camera", name = "camera-mlkit-vision", version.ref = "camerax_version" }
+firebase-vertexai = { module = "com.google.firebase:firebase-vertexai", version.ref = "vertexai"}
+
 arsceneview = {module="io.github.sceneview:arsceneview", version.ref="arsceneview"}
 
 [plugins]
