@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -40,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.vertexai)
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation(platform("androidx.compose:compose-bom:2025.01.01"))
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
