@@ -1,4 +1,4 @@
-package com.example.emchulacity.ui.theme
+package com.example.emchulacity.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

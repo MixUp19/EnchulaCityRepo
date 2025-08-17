@@ -26,7 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.emchulacity.nav.Navigation
 import com.example.emchulacity.nav.Screens
-import com.example.emchulacity.ui.theme.EmchulaCityTheme
+import com.example.emchulacity.theme.EmchulaCityTheme
 
 @Composable
 fun EnchulaAPP(

@@ -42,6 +42,11 @@ android {
 
 dependencies {
     implementation(libs.firebase.vertexai)
+    implementation("com.github.jeziellago:compose-markdown:0.5.7")
+    //implementation("com.halilibo.compose-richtext:richtext-ui-material:1.0.0-alpha02")
+    //implementation("com.halilibo.compose-richtext:richtext-ui:1.0.0-alpha02")
+    //implementation("com.halilibo.compose-richtext:richtext-markdown:1.0.0-alpha02")
+    //implementation("com.halilibo.compose-richtext:richtext-commonmark:1.0.0-alpha02")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation(platform("androidx.compose:compose-bom:2025.01.01"))
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
