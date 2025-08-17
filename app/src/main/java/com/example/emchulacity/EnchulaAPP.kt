@@ -26,7 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.emchulacity.nav.Navigation
 import com.example.emchulacity.nav.Screens
-import com.example.emchulacity.ui.theme.EmchulaCityTheme
+import com.example.emchulacity.theme.EmchulaCityTheme
 
 @Composable
 fun EnchulaAPP(
@@ -35,20 +35,20 @@ fun EnchulaAPP(
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val canNavigate = backStackEntry?.destination?.route != Screens.lobby.name
-        Scaffold (
-            topBar = {
-                EnchulaTopBar(
-                    canNavigate = canNavigate,
-                    navigateUp = { navController.popBackStack() },
-                )
-            }
-        ){ innerPadding ->
-                Navigation(
-                    requestPermission = result,
-                    navController = navController,
-                    modifier = Modifier.padding(innerPadding)
+    Scaffold (
+        topBar = {
+            EnchulaTopBar(
+                canNavigate = canNavigate,
+                navigateUp = { navController.popBackStack() },
                 )
         }
+    ){ innerPadding ->
+        Navigation(
+            requestPermission = result,
+            navController = navController,
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
 }
 
 
